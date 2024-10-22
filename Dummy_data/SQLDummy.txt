@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS alumnos (
+    matricula BIGINT UNSIGNED NOT NULL UNIQUE,
+    PRIMARY KEY (matricula)
+);
+
+DELIMITER //
+
+CREATE TRIGGER validar_matricula
+BEFORE INSERT ON alumnos
+FOR EACH ROW
+BEGIN
+    IF LENGTH(NEW.matricula) != 9 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La matricula debe tener exactamente 9 dígitos.';
+    END IF;
+END; //
+
+DELIMITER ;
